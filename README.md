@@ -1,7 +1,6 @@
 [//]: # (The links to vercel.app are not main links but links to the development states on GitHub and do not contain the latest version of the API.)
 [stats-deployments]: https://github.com/anuraghazra/github-readme-stats/deployments/Production
 [trophy-deployments]: https://github.com/ryo-ma/github-profile-trophy/deployments/Production
-[deployments-date]: 2025-12-09
 
 # GitHub Stat's of LizenzFass78851
 #### Powerd by [vercel.app](https://vercel.app)

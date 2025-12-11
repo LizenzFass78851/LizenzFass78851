@@ -1,0 +1,44 @@
+name: Update README with latest deployment URLs
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/update-readme.yml'
+      - '.github/scripts/update_readme.sh'
+  schedule:
+    - cron: '0 3 */7 * *'
+  workflow_dispatch:
+
+env:
+  SCRIPT01: .github/scripts/update_readme.sh
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: clone
+        uses: actions/checkout@main
+        with:
+          clean: false
+
+      - name: generate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo run ${{ env.SCRIPT01 }} && $SHELL ./${{ env.SCRIPT01 }}
+
+      - name: commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          git pull
+          git add .
+          git status
+          git config --local user.name github-actions[bot]
+          git config --local user.email github-actions[bot]@users.noreply.github.com
+          git diff --cached --quiet && exit 0 || git commit -m "docs: Update MD Files"
+          git config --local credential.helper '!x() { echo "password=$GITHUB_TOKEN"; };x'
+          git push origin $GITHUB_REF_NAME
